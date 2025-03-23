@@ -20,6 +20,10 @@ public class Card {
         this.pinNumber = pinNumber;
     }
 
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
     public String getCardNumber() {
         return cardNumber;
     }
