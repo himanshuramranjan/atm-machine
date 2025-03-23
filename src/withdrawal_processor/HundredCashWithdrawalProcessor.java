@@ -11,7 +11,7 @@ public class HundredCashWithdrawalProcessor extends CashWithdrawalProcessor {
     }
 
     @Override
-    public void withdrawCash(ATM atm, int amount) {
+    public boolean withdrawCash(ATM atm, int amount) {
         Map<DenominationType, Integer> availableDenominations = atm.getDenominations();
         int twoThousandDenomination = availableDenominations.get(DenominationType.HUNDRED);
         int requiredDenominations = amount / DenominationType.HUNDRED.getValue();
@@ -23,8 +23,6 @@ public class HundredCashWithdrawalProcessor extends CashWithdrawalProcessor {
             availableDenominations.put(DenominationType.HUNDRED, availableDenominations.get(DenominationType.HUNDRED) - requiredDenominations);
         }
 
-        if(remAmount != 0) {
-            super.withdrawCash(atm, remAmount);
-        }
+        return remAmount == 0;
     }
 }

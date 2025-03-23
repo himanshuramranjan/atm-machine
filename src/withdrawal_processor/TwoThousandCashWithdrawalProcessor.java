@@ -12,7 +12,7 @@ public class TwoThousandCashWithdrawalProcessor extends CashWithdrawalProcessor 
     }
 
     @Override
-    public void withdrawCash(ATM atm, int amount) {
+    public boolean withdrawCash(ATM atm, int amount) {
         Map<DenominationType, Integer> availableDenominations = atm.getDenominations();
         int twoThousandDenomination = availableDenominations.get(DenominationType.TWO_THOUSAND);
         int requiredDenominations = amount / DenominationType.TWO_THOUSAND.getValue();
@@ -25,8 +25,9 @@ public class TwoThousandCashWithdrawalProcessor extends CashWithdrawalProcessor 
         }
 
         if(remAmount != 0) {
-            super.withdrawCash(atm, remAmount);
+            return super.withdrawCash(atm, remAmount);
         }
+        return true;
     }
 
 }
