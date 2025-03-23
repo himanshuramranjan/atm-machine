@@ -42,6 +42,10 @@ public class ATM {
         return amount;
     }
 
+    public Map<DenominationType, Integer> getDenominations() {
+        return denominations;
+    }
+
     public void setAtmState(ATMState atmState) {
         this.atmState = atmState;
     }
