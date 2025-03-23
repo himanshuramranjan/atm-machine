@@ -1,6 +1,7 @@
 package models;
 
 import atmstates.ATMState;
+import atmstates.IdleState;
 import enums.DenominationType;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class ATM {
     private int amount;
 
     private ATM(Map<DenominationType, Integer> denominations) {
-        this.atmState = new ATMState();
+        this.atmState = new IdleState(this);
         this.denominations = new HashMap<>();
         addMoney(denominations);
     }
