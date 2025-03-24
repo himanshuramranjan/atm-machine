@@ -38,6 +38,10 @@ public class ATM {
         }
     }
 
+    public ATMState getAtmState() {
+        return atmState;
+    }
+
     public int getAmount() {
         return amount;
     }
