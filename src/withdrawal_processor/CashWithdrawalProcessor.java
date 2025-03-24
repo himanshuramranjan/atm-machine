@@ -9,10 +9,9 @@ public class CashWithdrawalProcessor {
         this.nextCashWithdrawalProcessor = cashWithdrawalProcessor;
     }
 
-    public boolean withdrawCash(ATM atm, int amount) {
+    public void withdrawCash(ATM atm, int amount) {
         if(nextCashWithdrawalProcessor != null) {
-            return nextCashWithdrawalProcessor.withdrawCash(atm, amount);
+            nextCashWithdrawalProcessor.withdrawCash(atm, amount);
         }
-        return false;
     }
 }
