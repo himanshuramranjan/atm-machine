@@ -20,15 +20,14 @@ public class CashWithdrawalState extends ATMState {
     @Override
     public void cashWithdrawal(int amount) {
         boolean isTransactionSuccessful = this.card.getBankAccount().deductAmount(amount);
-        if(!isTransactionSuccessful) {
-            System.out.println("Insufficient Account balance");
+        boolean hasAtmMoney = this.atm.getAmount() >= amount;
+
+        if(!(isTransactionSuccessful && hasAtmMoney)) {
+            System.out.println("Insufficient Account balance or Unable to dispense money");
         } else {
             CashWithdrawalProcessor cashWithdrawalProcessor = new TwoThousandCashWithdrawalProcessor(new FiveHundredCashWithdrawalProcessor(new HundredCashWithdrawalProcessor(null)));
-            boolean cashWithdrawn = cashWithdrawalProcessor.withdrawCash(this.atm, amount);
-            if(!cashWithdrawn) {
-                this.card.getBankAccount().creditMoney(amount);
-                System.out.println("Unable to despense money");
-            }
+            cashWithdrawalProcessor.withdrawCash(this.atm, amount);
+            System.out.println("Please collect your cash !!!");
         }
         exitTransaction();
     }
