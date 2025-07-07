@@ -82,10 +82,10 @@
 +----------------+
 | - cardNumber   |
 | - pin          |
-| - bankAccount  |
+| - List<bankAccount>  |
 +----------------+
 | +getUser()     |
-| +getAccount()  |
+| +getAccounts() |
 +----------------+
 
 +----------------+
@@ -97,12 +97,4 @@
 +----------------+
 | +getBalance()  |
 | +getUser()     |
-+----------------+
-
-+----------------+
-| User           |
-+----------------+
-| - userId       |
-| - name         |
-| - accounts: List<BankAccount> |
 +----------------+
