@@ -1,28 +1,29 @@
 package atmstates;
 
-import models.ATM;
-import models.Card;
+import service.ATM;
 
-public class AuthenticationState extends ATMState {
-    private final ATM atm;
-    private final Card card;
+public class AuthenticationState extends AbstractATMState {
 
-    public AuthenticationState(ATM atm, Card card) {
-        this.atm = atm;
-        this.card = card;
+    public AuthenticationState(ATM atm) {
+        super(atm);
     }
 
     @Override
     public void authenticateCard(int pin) {
-        if(this.card.validatePin(pin)) {
-            this.atm.setAtmState(new SelectOperationState(this.atm, this.card));
+        boolean isAuthenticated = atm.getTransactionContext().getCard().validatePin(pin);
+        atm.getTransactionContext().setAuthenticated(isAuthenticated);
+
+        if(isAuthenticated) {
+            System.out.println("Card is authenticated, select your transaction and Bank Account");
+            atm.setAtmState(new SelectOperationState(atm));
         } else {
-            exitTransaction();
+            System.out.println("Incorrect pin, try again");
         }
     }
 
     @Override
     public void exitTransaction() {
-        this.atm.setAtmState(new IdleState(this.atm));
+        atm.resetTransactionContext();
+        atm.setAtmState(new IdleState(atm));
     }
 }

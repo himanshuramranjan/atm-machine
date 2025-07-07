@@ -1,7 +1,7 @@
 package withdrawal_processor;
 
 import enums.DenominationType;
-import models.ATM;
+import service.ATM;
 
 import java.util.Map;
 

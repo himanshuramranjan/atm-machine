@@ -1,31 +1,15 @@
 package atmstates;
 
 import enums.TransactionType;
-import models.ATM;
+import models.BankAccount;
 import models.Card;
+import service.withdrawal_processor.CashWithdrawalProcessor;
 
-public class ATMState {
-    public void insertCard(Card card) {
-        System.out.println("Invalid operation, something went wrong");
-    }
-
-    public void authenticateCard(int pin) {
-        System.out.println("Invalid operation, something went wrong");
-    }
-
-    public void selectOperations(TransactionType transactionType) {
-        System.out.println("Invalid operation, something went wrong");
-    }
-
-    public void cashWithdrawal(int amount) {
-        System.out.println("Invalid operation, something went wrong");
-    }
-
-    public void displayBalance() {
-        System.out.println("Invalid operation, something went wrong");
-    }
-
-    public void exitTransaction() {
-        System.out.println("Invalid operation, something went wrong");
-    }
+public interface ATMState {
+    void insertCard(Card card);
+    void authenticateCard(int pin);
+    void selectOperations(TransactionType transactionType, BankAccount bankAccount);
+    void cashWithdrawal(CashWithdrawalProcessor cashWithdrawalProcessor, int amount);
+    void exitTransaction();
+    void displayBalance();
 }

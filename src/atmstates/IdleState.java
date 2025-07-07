@@ -1,21 +1,15 @@
 package atmstates;
 
-import models.ATM;
+import service.ATM;
 import models.Card;
 
-public class IdleState extends ATMState {
-
-    private final ATM atm;
-    private Card card;
-
+public class IdleState extends AbstractATMState {
     public IdleState(ATM atm) {
-        this.atm = atm;
-        this.card = null;
+        super(atm);
     }
-
     @Override
     public void insertCard(Card card) {
-        this.card = card;
-        this.atm.setAtmState(new AuthenticationState(this.atm, this.card));
+        atm.getTransactionContext().setCard(card);
+        atm.setAtmState(new AuthenticationState(atm));
     }
 }

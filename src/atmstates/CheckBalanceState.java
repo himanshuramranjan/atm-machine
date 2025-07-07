@@ -1,21 +1,18 @@
 package atmstates;
 
-import models.ATM;
-import models.Card;
+import service.ATM;
 
-public class CheckBalanceState extends ATMState {
-    private final ATM atm;
-    private final Card card;
+public class CheckBalanceState extends AbstractATMState {
 
-    public CheckBalanceState(ATM atm, Card card) {
-        this.atm = atm;
-        this.card = card;
+    public CheckBalanceState(ATM atm) {
+        super(atm);
     }
 
     @Override
     public void displayBalance() {
-        double balance = this.card.getBankAccount().getBalance();
+        double balance = atm.getTransactionContext().getSelectedBankAccount().getBalance();
         System.out.println("Your bank balance is : " + balance);
-        this.atm.setAtmState(new IdleState(this.atm));
+        atm.resetTransactionContext();
+        atm.setAtmState(new IdleState(this.atm));
     }
 }

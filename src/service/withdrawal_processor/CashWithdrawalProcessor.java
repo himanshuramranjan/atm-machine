@@ -1,6 +1,6 @@
 package withdrawal_processor;
 
-import models.ATM;
+import service.ATM;
 
 public class CashWithdrawalProcessor {
     CashWithdrawalProcessor nextCashWithdrawalProcessor;
