@@ -1,7 +1,7 @@
-package withdrawal_processor;
+package service.withdrawal_processor;
 
 import enums.DenominationType;
-import service.ATM;
+import service.CashManager;
 
 import java.util.Map;
 
@@ -11,15 +11,12 @@ public class HundredCashWithdrawalProcessor extends CashWithdrawalProcessor {
     }
 
     @Override
-    public void withdrawCash(ATM atm, int amount) {
-        Map<DenominationType, Integer> availableDenominations = atm.getDenominations();
-        int twoThousandDenomination = availableDenominations.get(DenominationType.HUNDRED);
-        int requiredDenominations = amount / DenominationType.HUNDRED.getValue();
+    public void withdrawCash(CashManager cashManager, int amount) {
+        Map<DenominationType, Integer> availableDenominations = cashManager.getCashBox();
+        int hundredDenomination = availableDenominations.get(DenominationType.HUNDRED);
+        int requiredDenominations = Math.min(amount / DenominationType.HUNDRED.getValue(), hundredDenomination);
 
-        if(requiredDenominations >= twoThousandDenomination) {
-            availableDenominations.put(DenominationType.HUNDRED, 0);
-        } else {
-            availableDenominations.put(DenominationType.HUNDRED, availableDenominations.get(DenominationType.HUNDRED) - requiredDenominations);
-        }
+        cashManager.deductCash(DenominationType.HUNDRED, requiredDenominations);
+        System.out.println("Dispensing 100 notes : " + requiredDenominations);
     }
 }

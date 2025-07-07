@@ -1,7 +1,7 @@
-package withdrawal_processor;
+package service.withdrawal_processor;
 
 import enums.DenominationType;
-import service.ATM;
+import service.CashManager;
 
 import java.util.Map;
 
@@ -12,20 +12,18 @@ public class TwoThousandCashWithdrawalProcessor extends CashWithdrawalProcessor 
     }
 
     @Override
-    public void withdrawCash(ATM atm, int amount) {
-        Map<DenominationType, Integer> availableDenominations = atm.getDenominations();
-        int twoThousandDenomination = availableDenominations.get(DenominationType.TWO_THOUSAND);
-        int requiredDenominations = amount / DenominationType.TWO_THOUSAND.getValue();
-        int remAmount = requiredDenominations % DenominationType.TWO_THOUSAND.getValue();
+    public void withdrawCash(CashManager cashManager, int amount) {
+        Map<DenominationType, Integer> availableDenominations = cashManager.getCashBox();
 
-        if(requiredDenominations >= twoThousandDenomination) {
-            availableDenominations.put(DenominationType.TWO_THOUSAND, 0);
-        } else {
-            availableDenominations.put(DenominationType.TWO_THOUSAND, availableDenominations.get(DenominationType.TWO_THOUSAND) - requiredDenominations);
-        }
+        int twoThousandDenomination = availableDenominations.get(DenominationType.TWO_THOUSAND);
+        int requiredDenominations = Math.min(amount / DenominationType.TWO_THOUSAND.getValue(), twoThousandDenomination);
+        int remAmount = amount - (requiredDenominations * DenominationType.TWO_THOUSAND.getValue());
+
+        cashManager.deductCash(DenominationType.TWO_THOUSAND, requiredDenominations);
+        System.out.println("Dispensing 2000 notes : " + requiredDenominations);
 
         if(remAmount != 0) {
-            super.withdrawCash(atm, remAmount);
+            super.withdrawCash(cashManager, remAmount);
         }
     }
 
