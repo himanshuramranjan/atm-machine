@@ -1,40 +1,35 @@
 package atmstates;
 
-import models.ATM;
-import models.Card;
-import withdrawal_processor.CashWithdrawalProcessor;
-import withdrawal_processor.FiveHundredCashWithdrawalProcessor;
-import withdrawal_processor.HundredCashWithdrawalProcessor;
-import withdrawal_processor.TwoThousandCashWithdrawalProcessor;
+import service.ATM;
+import service.withdrawal_processor.CashWithdrawalProcessor;
 
-public class CashWithdrawalState extends ATMState {
-    private final ATM atm;
-
-    private final Card card;
-
-    public CashWithdrawalState(ATM atm, Card card) {
-        this.atm = atm;
-        this.card = card;
+public class CashWithdrawalState extends AbstractATMState {
+    public CashWithdrawalState(ATM atm) {
+        super(atm);
     }
 
     @Override
-    public void cashWithdrawal(int amount) {
-        boolean isTransactionSuccessful = this.card.getBankAccount().deductAmount(amount);
-        boolean hasAtmMoney = this.atm.getAmount() >= amount;
+    public void cashWithdrawal(CashWithdrawalProcessor cashWithdrawalProcessor, int amount) {
+        boolean insufficientBalance = atm.getTransactionContext().getSelectedBankAccount().getBalance() < amount;
+        boolean hasInsufficientAmount = !atm.getCashManager().hasSufficientChange(amount);
 
-        if(!(isTransactionSuccessful && hasAtmMoney)) {
+        if(insufficientBalance || hasInsufficientAmount) {
             System.out.println("Insufficient Account balance or Unable to dispense money");
-        } else {
-            CashWithdrawalProcessor cashWithdrawalProcessor = new TwoThousandCashWithdrawalProcessor(new FiveHundredCashWithdrawalProcessor(new HundredCashWithdrawalProcessor(null)));
-            cashWithdrawalProcessor.withdrawCash(this.atm, amount);
-            System.out.println("Please collect your cash !!!");
+            exitTransaction();
+            return;
         }
+
+        atm.getTransactionContext().getSelectedBankAccount().deductAmount(amount);
+        cashWithdrawalProcessor.withdrawCash(atm.getCashManager(), amount);
+        System.out.println("Please collect your cash !!!");
+
         exitTransaction();
     }
 
     @Override
     public void exitTransaction() {
-        this.atm.setAtmState(new IdleState(this.atm));
+        atm.resetTransactionContext();
+        atm.setAtmState(new IdleState(atm));
     }
 
 }

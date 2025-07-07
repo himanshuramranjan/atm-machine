@@ -1,26 +1,24 @@
 package atmstates;
 
 import enums.TransactionType;
-import models.ATM;
-import models.Card;
+import models.BankAccount;
+import service.ATM;
 
-public class SelectOperationState extends ATMState {
-    private final ATM atm;
-    private final Card card;
-
-    public SelectOperationState(ATM atm, Card card) {
-        this.atm = atm;
-        this.card = card;
+public class SelectOperationState extends AbstractATMState {
+    public SelectOperationState(ATM atm) {
+        super(atm);
     }
-
     @Override
-    public void selectOperations(TransactionType transactionType) {
+    public void selectOperations(TransactionType transactionType, BankAccount bankAccount) {
+        atm.getTransactionContext().setTransactionType(transactionType);
+        atm.getTransactionContext().setSelectedBankAccount(bankAccount);
+
         switch (transactionType) {
             case WITHDRAW_MONEY :
-                this.atm.setAtmState(new CashWithdrawalState(this.atm, this.card));
+                atm.setAtmState(new CashWithdrawalState(atm));
                 break;
             case BALANCE_CHECK :
-                this.atm.setAtmState(new CheckBalanceState(this.atm, this.card));
+                atm.setAtmState(new CheckBalanceState(atm));
                 break;
         }
     }
