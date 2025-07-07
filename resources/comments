@@ -33,3 +33,5 @@ Session-specific behavior: A card is inserted and used only during an ATM sessio
 Redundant ownership: Card already links to a BankAccount, which in turn references the User, avoiding duplication.
 Multiplicity issues: A user can have multiple cards; storing them in User complicates the model unnecessarily.
 Clean object graph: Avoids circular references like User → Card → Account → User, improving modularity and testability.
+
+Note : with understanding of the above query, User class seems redundant in current design
