@@ -1,0 +1,108 @@
++----------------------+
+|       ATM            |
++----------------------+
+| - atmState: ATMState |
+| - cashInventory: CashInventory |
+| - transactionContext: TransactionContext |
++----------------------+
+| +setAtmState(state)  |
+| +getTransactionContext() |
+| +getCashInventory()  |
+| +resetTransactionContext() |
++----------------------+
+          |
+          v
+   +-------------------+
+   |    ATMState       |<<interface>>
+   +-------------------+
+   | +insertCard(Card) |
+   | +authenticateCard(pin) |
+   | +selectOperations(TransactionType) |
+   | +cashWithdrawal(amount) |
+   | +displayBalance()       |
+   | +exitTransaction()      |
+   +-------------------+
+          ^
+          |
++------------------------+
+|  AbstractATMState      |
++------------------------+
+| - atm: ATM             |
++------------------------+
+| +invalid()             |
+| (default method impls) |
++------------------------+
+          ^
+          |
+   --------------------------
+   |     |     |     |     |
+   v     v     v     v     v
++------------+  +---------------+  +-------------------+
+| IdleState  |  | AuthState     |  | CheckBalanceState |
++------------+  +---------------+  +-------------------+
+| ...        |  | ...           |  | displayBalance()   |
++------------+  +---------------+  +-------------------+
+
+
++--------------------------+
+| TransactionContext       |
++--------------------------+
+| - card: Card             |
+| - user: User             |
+| - selectedAccount: BankAccount |
+| - transactionType: TransactionType |
+| - isAuthenticated: boolean |
++--------------------------+
+| +getCard() / setCard()  |
+| +getUser() / setUser()  |
+| +getSelectedAccount()   |
+| +reset()                |
++--------------------------+
+
++--------------------------+
+| CashInventory            |
++--------------------------+
+| - denominations: Map<DenominationType, Integer> |
++--------------------------+
+| +addCash(type, count)    |
+| +deductCash(type, count) |
+| +getTotalCash()          |
++--------------------------+
+
++----------------+
+| DenominationType|<<enum>>
++----------------+
+| FIVE_HUNDRED   |
+| TWO_HUNDRED    |
+| HUNDRED        |
++----------------+
+
++----------------+
+| Card           |
++----------------+
+| - cardNumber   |
+| - pin          |
+| - bankAccount  |
++----------------+
+| +getUser()     |
+| +getAccount()  |
++----------------+
+
++----------------+
+| BankAccount    |
++----------------+
+| - accountNumber|
+| - balance      |
+| - user         |
++----------------+
+| +getBalance()  |
+| +getUser()     |
++----------------+
+
++----------------+
+| User           |
++----------------+
+| - userId       |
+| - name         |
+| - accounts: List<BankAccount> |
++----------------+
