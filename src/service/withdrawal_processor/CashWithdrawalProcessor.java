@@ -1,6 +1,6 @@
-package withdrawal_processor;
+package service.withdrawal_processor;
 
-import service.ATM;
+import service.CashManager;
 
 public class CashWithdrawalProcessor {
     CashWithdrawalProcessor nextCashWithdrawalProcessor;
@@ -9,9 +9,9 @@ public class CashWithdrawalProcessor {
         this.nextCashWithdrawalProcessor = cashWithdrawalProcessor;
     }
 
-    public void withdrawCash(ATM atm, int amount) {
+    public void withdrawCash(CashManager cashManager, int amount) {
         if(nextCashWithdrawalProcessor != null) {
-            nextCashWithdrawalProcessor.withdrawCash(atm, amount);
+            nextCashWithdrawalProcessor.withdrawCash(cashManager, amount);
         }
     }
 }

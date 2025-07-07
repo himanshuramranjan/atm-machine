@@ -1,56 +1,50 @@
-package models;
+package service;
 
 import atmstates.ATMState;
 import atmstates.IdleState;
-import enums.DenominationType;
-
-import java.util.HashMap;
-import java.util.Map;
+import models.TransactionContext;
 
 public class ATM {
 
     public static volatile ATM atm;
     private ATMState atmState;
-    private final Map<DenominationType, Integer> denominations;
-    private int amount;
+    private TransactionContext transactionContext;
+    private final CashManager cashManager;
 
-    private ATM(Map<DenominationType, Integer> denominations) {
+    private ATM() {
         this.atmState = new IdleState(this);
-        this.denominations = new HashMap<>();
-        addMoney(denominations);
+        this.cashManager = CashManager.getInstance();
+        transactionContext = new TransactionContext();
     }
 
-    public static ATM getInstance(Map<DenominationType, Integer> denominations) {
+    public static ATM getInstance() {
         if(atm == null) {
             synchronized (ATM.class) {
                 if(atm == null) {
-                    atm = new ATM(denominations);
+                    atm = new ATM();
                 }
             }
         }
         return atm;
     }
 
-    public void addMoney(Map<DenominationType, Integer> currencies) {
-        for(DenominationType currency : currencies.keySet()) {
-            this.denominations.put(currency, this.denominations.getOrDefault(currency, 0) + currencies.get(currency));
-            this.amount += (denominations.get(currency) * currency.getValue());
-        }
-    }
-
     public ATMState getAtmState() {
         return atmState;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public Map<DenominationType, Integer> getDenominations() {
-        return denominations;
-    }
-
     public void setAtmState(ATMState atmState) {
         this.atmState = atmState;
+    }
+
+    public TransactionContext getTransactionContext() {
+        return transactionContext;
+    }
+
+    public void resetTransactionContext() {
+        this.transactionContext = new TransactionContext();
+    }
+
+    public CashManager getCashManager() {
+        return cashManager;
     }
 }
