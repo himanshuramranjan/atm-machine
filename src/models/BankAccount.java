@@ -1,14 +1,15 @@
 package models;
 
-public class BankAccount {
+import enums.AccountType;
 
-    private String customerName;
+public class BankAccount {
     private final String accountId;
+    private final AccountType accountType;
     private double balance;
 
-    public BankAccount(String name, String accountId, double balance) {
-        this.customerName = name;
+    public BankAccount(String accountId, AccountType accountType, double balance) {
         this.accountId = accountId;
+        this.accountType = accountType;
         this.balance = balance;
     }
 
@@ -16,10 +17,8 @@ public class BankAccount {
         this.balance += amount;
     }
 
-    public boolean deductAmount(double amount) {
-        if(amount > balance) return false;
+    public void deductAmount(double amount) {
         this.balance -= amount;
-        return true;
     }
 
     public String getAccountId() {
@@ -28,5 +27,9 @@ public class BankAccount {
 
     public double getBalance() {
         return balance;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
     }
 }
