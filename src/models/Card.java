@@ -1,18 +1,17 @@
 package models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class Card {
 
     private final String cardNumber;
     private final int cvv;
     private final LocalDate expiryDate;
-
-    private final BankAccount bankAccount;
+    private final List<BankAccount> bankAccount;
     private int pinNumber;
 
-    public Card(BankAccount bankAccount, String cardNumber, int cvv, LocalDate expiryDate, int pinNumber) {
+    public Card(List<BankAccount> bankAccount, String cardNumber, int cvv, LocalDate expiryDate, int pinNumber) {
         this.bankAccount = bankAccount;
         this.cardNumber = cardNumber;
         this.cvv = cvv;
@@ -20,7 +19,7 @@ public class Card {
         this.pinNumber = pinNumber;
     }
 
-    public BankAccount getBankAccount() {
+    public List<BankAccount> getBankAccount() {
         return bankAccount;
     }
 
