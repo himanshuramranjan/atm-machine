@@ -1,0 +1,26 @@
+> why to have a transaction / session class separately, cant we keep the fields some where else
+
+Storing Card in ATM class gives global access but mixes session-specific data with machine-level responsibilities.
+Storing in ATMState or individual states leads to poor data sharing across states and scattered logic.
+
+Best practice: Introduce a TransactionContext (or SessionContext) class to hold session-specific data like Card,
+User, Account, and TransactionType.
+
+Benefits of Using TransactionContext:
+
+Clean separation of concerns.
+Central place to manage user session lifecycle.
+Easily accessible from all states via atm.getTransactionContext().
+
+This approach keeps the design modular, testable, and aligned with real-world ATM behavior.
+
+> Should we pass down ATM as parameter in each method of ATMState or just provide a instance at the abstract
+class level so that each of the implementation gets it by default
+
+Since we're designing a single, concrete ATM, and each state is tightly coupled to ATM behavior anyway:
+
+So we can go ahead and store the ATM object as a final field in our base class
+(AbstractATMState) — it's clean, safe, and simplifies your code without sacrificing clarity.
+
+If, in the future, we need extensibility or multi-ATM support,
+we can refactor to the stateless/pure form — which would be much easier because of the clean interface boundary.
