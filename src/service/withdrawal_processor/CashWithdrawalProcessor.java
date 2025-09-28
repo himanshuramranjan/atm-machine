@@ -2,10 +2,10 @@ package service.withdrawal_processor;
 
 import service.CashManager;
 
-public class CashWithdrawalProcessor {
+public abstract class CashWithdrawalProcessor {
     CashWithdrawalProcessor nextCashWithdrawalProcessor;
 
-    public CashWithdrawalProcessor(CashWithdrawalProcessor cashWithdrawalProcessor) {
+    protected CashWithdrawalProcessor(CashWithdrawalProcessor cashWithdrawalProcessor) {
         this.nextCashWithdrawalProcessor = cashWithdrawalProcessor;
     }
 
