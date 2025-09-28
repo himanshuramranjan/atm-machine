@@ -3,27 +3,24 @@ package service;
 import enums.DenominationType;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CashManager {
 
     private final Map<DenominationType, Integer> cashBox;
     private float totalAmount;
-    public static volatile CashManager cashManager;
 
     private CashManager() {
-        cashBox = new HashMap<>();
+        cashBox = new ConcurrentHashMap<>();
         totalAmount = 0;
     }
 
+    private static class CashManagerHelper {
+        private static final CashManager INSTANCE = new CashManager();
+    }
+
     public static CashManager getInstance() {
-        if(cashManager == null) {
-            synchronized (CashManager.class) {
-                if(cashManager == null) {
-                    cashManager = new CashManager();
-                }
-            }
-        }
-        return cashManager;
+        return CashManagerHelper.INSTANCE;
     }
 
     public void addNotes(Map<DenominationType, Integer> insertedNotes) {

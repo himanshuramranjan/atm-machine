@@ -6,7 +6,6 @@ import models.TransactionContext;
 
 public class ATM {
 
-    public static volatile ATM atm;
     private ATMState atmState;
     private TransactionContext transactionContext;
     private final CashManager cashManager;
@@ -16,16 +15,12 @@ public class ATM {
         this.cashManager = CashManager.getInstance();
         transactionContext = new TransactionContext();
     }
+    private static class ATMHelper {
+        private static final ATM INSTANCE = new ATM();
+    }
 
     public static ATM getInstance() {
-        if(atm == null) {
-            synchronized (ATM.class) {
-                if(atm == null) {
-                    atm = new ATM();
-                }
-            }
-        }
-        return atm;
+        return ATMHelper.INSTANCE;
     }
 
     public ATMState getAtmState() {
