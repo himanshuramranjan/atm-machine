@@ -6,7 +6,7 @@ import models.Card;
 import service.ATM;
 import service.withdrawal_processor.CashWithdrawalProcessor;
 
-public class AbstractATMState implements ATMState {
+public abstract class AbstractATMState implements ATMState {
 
     protected final ATM atm;
 
